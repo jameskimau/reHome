@@ -43,8 +43,44 @@ export const CONDITION_LABELS: Record<Condition, string> = {
   FAIR: "Fair",
 };
 
+export interface PriceRange {
+  /** Used in URLs, e.g. /products?price=300-600 */
+  id: string;
+  label: string;
+  min: number;
+  /** Exclusive. Omit for an open-ended range. */
+  max?: number;
+}
+
+export const PRICE_RANGES: PriceRange[] = [
+  { id: "under-300", label: "Under $300", min: 0, max: 300 },
+  { id: "300-600", label: "$300 – $600", min: 300, max: 600 },
+  { id: "600-900", label: "$600 – $900", min: 600, max: 900 },
+  { id: "900-plus", label: "$900+", min: 900 },
+];
+
+export const SORT_OPTIONS = [
+  { id: "newest", label: "Newest" },
+  { id: "price-asc", label: "Price: Low to High" },
+  { id: "price-desc", label: "Price: High to Low" },
+] as const;
+export type SortOption = (typeof SORT_OPTIONS)[number]["id"];
+export const DEFAULT_SORT: SortOption = "newest";
+
 export function parseCategorySlug(slug: string | undefined): Category | undefined {
   return CATEGORIES.find((category) => CATEGORY_META[category].slug === slug);
+}
+
+export function isInPriceRange(price: number, { min, max }: PriceRange): boolean {
+  return price >= min && (max === undefined || price < max);
+}
+
+/** "Fisher & Paykel" → "fisher-paykel" */
+export function toBrandSlug(brand: string): string {
+  return brand
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 export function formatCapacity({ capacity, category }: Product): string | undefined {
