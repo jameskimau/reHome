@@ -1,4 +1,4 @@
-import { ArrowDownIcon, ShieldCheckIcon, SparklesIcon, TruckIcon } from "lucide-react";
+import { ArrowRightIcon, ShieldCheckIcon, SparklesIcon, TruckIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -69,9 +69,9 @@ const Hero = async () => {
               size="lg"
               className="h-12 bg-white px-6 text-base text-primary hover:bg-white/90"
             >
-              <Link href={`#${SHOP_SECTION_ID}`}>
+              <Link href={`/#${SHOP_SECTION_ID}`}>
                 Shop now
-                <ArrowDownIcon aria-hidden="true" />
+                <ArrowRightIcon aria-hidden="true" />
               </Link>
             </Button>
             <CallButton

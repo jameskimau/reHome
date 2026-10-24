@@ -17,7 +17,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl border bg-card transition-shadow hover:shadow-md focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border bg-card transition-shadow hover:shadow-md focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
     >
       <div className="relative aspect-square bg-muted">
         <Image
@@ -36,7 +36,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {product.brand}
           {capacity && ` · ${capacity}`}
         </p>
-        <h3 className="leading-snug font-semibold">{product.title}</h3>
+        {/* Reserve two lines so cards stay the same height whether the title wraps or not. */}
+        <h3 className="line-clamp-2 min-h-[2lh] leading-snug font-semibold">{product.title}</h3>
         <PriceTag price={product.price} className="mt-auto pt-2" />
       </div>
     </Link>

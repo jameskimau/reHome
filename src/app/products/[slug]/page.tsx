@@ -11,7 +11,6 @@ import ProductGallery from "@/components/product/ProductGallery";
 import ProductSpecs from "@/components/product/ProductSpecs";
 import SoldOverlay from "@/components/product/SoldOverlay";
 import { getCategoryHref } from "@/config/navigation";
-import { siteConfig } from "@/config/site";
 import { CATEGORY_META } from "@/lib/catalog";
 import { getProductBySlug, getProducts } from "@/lib/products";
 
@@ -74,13 +73,7 @@ const ProductDetailPage = async ({ params }: PageProps<"/products/[slug]">) => {
               <CallButton label="Call us" variant="outline" />
             </div>
           ) : (
-            <div className="space-y-2">
-              <CallButton showNumber className="h-12 w-full text-base sm:w-auto sm:px-6" />
-              <p className="text-sm text-muted-foreground">
-                Call to reserve, arrange an inspection or book delivery around{" "}
-                {siteConfig.serviceArea}. {siteConfig.businessHours}.
-              </p>
-            </div>
+            <CallButton showNumber className="h-12 w-full text-base sm:w-auto sm:px-6" />
           )}
 
           <p className="leading-relaxed">{product.description}</p>

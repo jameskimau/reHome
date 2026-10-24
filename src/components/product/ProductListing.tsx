@@ -43,12 +43,12 @@ const ProductListing = async ({ searchParams }: ProductListingProps) => {
 
       <div className="min-w-0 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
             {getListingTitle(query)}{" "}
             <span className="text-base font-normal text-muted-foreground">
               ({products.length} {products.length === 1 ? "result" : "results"})
             </span>
-          </h2>
+          </h1>
           <div className="flex w-full items-center justify-between gap-2 sm:w-auto">
             <MobileFilterSheet query={query} facets={facets} resultCount={products.length} />
             <SortSelect query={query} />

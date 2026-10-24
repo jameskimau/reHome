@@ -1,4 +1,8 @@
+import type { ReactNode } from "react";
+
+import { siteConfig } from "@/config/site";
 import { CATEGORY_META, CONDITION_LABELS, formatCapacity, formatDimensions } from "@/lib/catalog";
+import { formatPhone, toTelHref } from "@/lib/format";
 import type { Product } from "@/types/product";
 
 interface ProductSpecsProps {
@@ -7,7 +11,7 @@ interface ProductSpecsProps {
 
 interface Spec {
   label: string;
-  value: string | undefined;
+  value: ReactNode;
 }
 
 function buildSpecs(product: Product): Spec[] {
@@ -19,12 +23,15 @@ function buildSpecs(product: Product): Spec[] {
     { label: "Capacity", value: formatCapacity(product) },
     { label: "Dimensions (W × H × D)", value: formatDimensions(product) },
     {
-      label: "Energy rating",
-      value: product.energyRating === undefined ? undefined : `${product.energyRating} stars`,
-    },
-    {
-      label: "Warranty",
-      value: product.warrantyMonths === undefined ? undefined : `${product.warrantyMonths} months`,
+      label: "Contact",
+      value: (
+        <a
+          href={toTelHref(siteConfig.phone)}
+          className="text-primary underline-offset-4 hover:underline"
+        >
+          {formatPhone(siteConfig.phone)}
+        </a>
+      ),
     },
   ];
 }
