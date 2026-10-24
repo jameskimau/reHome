@@ -21,3 +21,16 @@ export function formatPhone(e164: string): string {
 export function toTelHref(e164: string): string {
   return `tel:${e164}`;
 }
+
+interface Address {
+  placeName?: string;
+  street: string;
+  suburb: string;
+  state: string;
+  postcode: string;
+}
+
+/** "11A Edinburgh Rd, Marrickville NSW 2204" */
+export function formatAddress({ street, suburb, state, postcode }: Address): string {
+  return `${street}, ${suburb} ${state} ${postcode}`;
+}

@@ -9,6 +9,9 @@ export interface NavLink {
 /** Anchor of the shop listing section on the home page. */
 export const SHOP_SECTION_ID = "shop";
 
+/** Anchor of the location section on the about page. */
+export const LOCATION_SECTION_ID = "location";
+
 export function getCategoryHref(slug: string): string {
   return `/?category=${slug}#${SHOP_SECTION_ID}`;
 }

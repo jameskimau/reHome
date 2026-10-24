@@ -8,4 +8,12 @@ export const siteConfig = {
   /** Placeholder until confirmed. */
   serviceArea: "Sydney",
   businessHours: "Mon–Sat, 8am–6pm",
+  /** Pick-up location. `placeName` helps Google Maps drop the pin on the right building. */
+  address: {
+    placeName: "National Storage Marrickville",
+    street: "11A Edinburgh Rd",
+    suburb: "Marrickville",
+    state: "NSW",
+    postcode: "2204",
+  },
 } as const;

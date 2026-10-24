@@ -12,7 +12,10 @@ const LocalBusinessJsonLd = () => {
     areaServed: siteConfig.serviceArea,
     address: {
       "@type": "PostalAddress",
-      addressLocality: siteConfig.serviceArea,
+      streetAddress: siteConfig.address.street,
+      addressLocality: siteConfig.address.suburb,
+      addressRegion: siteConfig.address.state,
+      postalCode: siteConfig.address.postcode,
       addressCountry: "AU",
     },
   };

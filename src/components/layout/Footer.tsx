@@ -3,9 +3,9 @@ import Link from "next/link";
 
 import Container from "@/components/common/Container";
 import Logo from "@/components/layout/Logo";
-import { mainNav } from "@/config/navigation";
+import { LOCATION_SECTION_ID, mainNav } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
-import { formatPhone, toTelHref } from "@/lib/format";
+import { formatAddress, formatPhone, toTelHref } from "@/lib/format";
 
 // Cache Components forbids reading the clock during prerender, so cache the year for a day.
 const getCurrentYear = async () => {
@@ -47,7 +47,11 @@ const Footer = async () => {
               </a>
             </li>
             <li>{siteConfig.businessHours}</li>
-            <li>Serving {siteConfig.serviceArea} &amp; surrounds</li>
+            <li>
+              <Link href={`/about#${LOCATION_SECTION_ID}`} className="hover:text-foreground">
+                {formatAddress(siteConfig.address)}
+              </Link>
+            </li>
           </ul>
         </div>
       </Container>

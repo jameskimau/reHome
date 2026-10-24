@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 
 import Hero from "@/components/about/Hero";
+import HowItWorks from "@/components/about/HowItWorks";
+import LocationSection from "@/components/about/LocationSection";
+import WhyUs from "@/components/about/WhyUs";
 import CallButton from "@/components/common/CallButton";
 import Container from "@/components/common/Container";
 import { siteConfig } from "@/config/site";
@@ -34,6 +37,9 @@ const AboutPage = () => {
         </div>
         <CallButton label="Call us" showNumber />
       </Container>
+      <HowItWorks />
+      <WhyUs />
+      <LocationSection />
     </>
   );
 };
