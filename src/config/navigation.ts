@@ -6,12 +6,15 @@ export interface NavLink {
   label: string;
 }
 
+/** Anchor of the shop listing section on the home page. */
+export const SHOP_SECTION_ID = "shop";
+
 export function getCategoryHref(slug: string): string {
-  return `/products?category=${slug}`;
+  return `/?category=${slug}#${SHOP_SECTION_ID}`;
 }
 
 export const mainNav: NavLink[] = [
-  { href: "/products", label: "Shop All" },
+  { href: `/#${SHOP_SECTION_ID}`, label: "Shop All" },
   ...CATEGORIES.map((category) => ({
     href: getCategoryHref(CATEGORY_META[category].slug),
     label: CATEGORY_META[category].pluralLabel,

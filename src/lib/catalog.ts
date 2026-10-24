@@ -3,10 +3,9 @@ import { CATEGORIES, type Category, type Condition, type Product } from "@/types
 interface CategoryMeta {
   label: string;
   pluralLabel: string;
-  /** Used in URLs, e.g. /products?category=washer */
+  /** Used in URLs, e.g. /?category=washer */
   slug: string;
   capacityUnit: "kg" | "L";
-  tagline: string;
   image: string;
 }
 
@@ -16,7 +15,6 @@ export const CATEGORY_META: Record<Category, CategoryMeta> = {
     pluralLabel: "Washing Machines",
     slug: "washer",
     capacityUnit: "kg",
-    tagline: "Front and top loaders, drum-cleaned and load-tested.",
     image: "/images/placeholders/washer.svg",
   },
   FRIDGE: {
@@ -24,7 +22,6 @@ export const CATEGORY_META: Record<Category, CategoryMeta> = {
     pluralLabel: "Fridges",
     slug: "fridge",
     capacityUnit: "L",
-    tagline: "Top mount to side by side, sanitised and temperature-checked.",
     image: "/images/placeholders/fridge.svg",
   },
   DRYER: {
@@ -32,7 +29,6 @@ export const CATEGORY_META: Record<Category, CategoryMeta> = {
     pluralLabel: "Dryers",
     slug: "dryer",
     capacityUnit: "kg",
-    tagline: "Vented and heat pump dryers, lint paths cleared.",
     image: "/images/placeholders/dryer.svg",
   },
 };
@@ -44,7 +40,7 @@ export const CONDITION_LABELS: Record<Condition, string> = {
 };
 
 export interface PriceRange {
-  /** Used in URLs, e.g. /products?price=300-600 */
+  /** Used in URLs, e.g. /?price=300-600 */
   id: string;
   label: string;
   min: number;

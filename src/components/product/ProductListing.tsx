@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { CATEGORY_META, parseCategorySlug } from "@/lib/catalog";
 import {
   EMPTY_QUERY,
-  buildProductsHref,
+  buildShopHref,
   parseProductQuery,
   toProductFilter,
   type ProductQuery,
@@ -17,12 +17,12 @@ import {
 import { getProductFacets, getProducts } from "@/lib/products";
 
 interface ProductListingProps {
-  searchParams: PageProps<"/products">["searchParams"];
+  searchParams: PageProps<"/">["searchParams"];
 }
 
 function getListingTitle({ categories }: ProductQuery): string {
   const category = categories.length === 1 ? parseCategorySlug(categories[0]) : undefined;
-  return category ? CATEGORY_META[category].pluralLabel : "Our used appliances";
+  return category ? CATEGORY_META[category].pluralLabel : "All appliances";
 }
 
 // Reads searchParams, so it must render inside <Suspense> (Cache Components).
@@ -43,12 +43,12 @@ const ProductListing = async ({ searchParams }: ProductListingProps) => {
 
       <div className="min-w-0 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
             {getListingTitle(query)}{" "}
             <span className="text-base font-normal text-muted-foreground">
               ({products.length} {products.length === 1 ? "result" : "results"})
             </span>
-          </h1>
+          </h2>
           <div className="flex w-full items-center justify-between gap-2 sm:w-auto">
             <MobileFilterSheet query={query} facets={facets} resultCount={products.length} />
             <SortSelect query={query} />
@@ -63,7 +63,7 @@ const ProductListing = async ({ searchParams }: ProductListingProps) => {
               description="Try removing a filter, or call us — new stock arrives every week."
               action={
                 <Button asChild variant="outline">
-                  <Link href={buildProductsHref({ ...EMPTY_QUERY, sort: query.sort })}>
+                  <Link href={buildShopHref({ ...EMPTY_QUERY, sort: query.sort })}>
                     Clear filters
                   </Link>
                 </Button>

@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import Container from "@/components/common/Container";
 import { Button } from "@/components/ui/button";
+import { SHOP_SECTION_ID } from "@/config/navigation";
 
 const NotFound = () => {
   return (
@@ -12,7 +13,7 @@ const NotFound = () => {
         This page doesn&apos;t exist, or the item may have been removed.
       </p>
       <Button asChild size="lg">
-        <Link href="/products">Browse appliances</Link>
+        <Link href={`/#${SHOP_SECTION_ID}`}>Browse appliances</Link>
       </Button>
     </Container>
   );

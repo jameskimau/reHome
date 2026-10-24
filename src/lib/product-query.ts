@@ -1,5 +1,5 @@
-// Converts between the /products URL and a typed query. Multi-select values are comma-separated,
-// e.g. /products?category=washer,fridge&brand=lg&price=under-300&sort=price-asc
+// Converts between the shop URL (home page) and a typed query. Multi-select values are comma-separated,
+// e.g. /?category=washer,fridge&brand=lg&price=under-300&sort=price-asc
 import {
   DEFAULT_SORT,
   PRICE_RANGES,
@@ -52,7 +52,8 @@ export function parseProductQuery(params: SearchParams): ProductQuery {
   };
 }
 
-export function buildProductsHref(query: ProductQuery): string {
+/** The shop listing lives on the home page. */
+export function buildShopHref(query: ProductQuery): string {
   const entries: [string, string][] = [
     ["category", query.categories.join(",")],
     ["brand", query.brands.join(",")],
@@ -64,7 +65,7 @@ export function buildProductsHref(query: ProductQuery): string {
     .map(([key, value]) => `${key}=${encodeURIComponent(value).replace(/%2C/g, ",")}`)
     .join("&");
 
-  return params ? `/products?${params}` : "/products";
+  return params ? `/?${params}` : "/";
 }
 
 export function toggleValue(list: string[], value: string): string[] {

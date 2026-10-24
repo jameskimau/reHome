@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DEFAULT_SORT, SORT_OPTIONS } from "@/lib/catalog";
-import { buildProductsHref, type ProductQuery } from "@/lib/product-query";
+import { buildShopHref, type ProductQuery } from "@/lib/product-query";
 
 interface SortSelectProps {
   query: ProductQuery;
@@ -21,7 +21,7 @@ const SortSelect = ({ query }: SortSelectProps) => {
 
   const changeSort = (value: string) => {
     const sort = SORT_OPTIONS.find((option) => option.id === value)?.id ?? DEFAULT_SORT;
-    router.push(buildProductsHref({ ...query, sort }), { scroll: false });
+    router.push(buildShopHref({ ...query, sort }), { scroll: false });
   };
 
   return (

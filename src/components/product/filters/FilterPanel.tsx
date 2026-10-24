@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/accordion";
 import {
   EMPTY_QUERY,
-  buildProductsHref,
+  buildShopHref,
   countActiveFilters,
   toggleValue,
   type FilterKey,
@@ -37,7 +37,7 @@ const FilterPanel = ({ query, facets }: FilterPanelProps) => {
   const [isPending, startTransition] = useTransition();
 
   const navigate = (nextQuery: ProductQuery) => {
-    startTransition(() => router.push(buildProductsHref(nextQuery), { scroll: false }));
+    startTransition(() => router.push(buildShopHref(nextQuery), { scroll: false }));
   };
 
   const toggle = (key: FilterKey, value: string) => {
