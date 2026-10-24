@@ -1,4 +1,4 @@
-import { CATEGORIES, type Category, type Condition } from "@/types/product";
+import { CATEGORIES, type Category, type Condition, type Product } from "@/types/product";
 
 interface CategoryMeta {
   label: string;
@@ -6,6 +6,8 @@ interface CategoryMeta {
   /** Used in URLs, e.g. /products?category=washer */
   slug: string;
   capacityUnit: "kg" | "L";
+  tagline: string;
+  image: string;
 }
 
 export const CATEGORY_META: Record<Category, CategoryMeta> = {
@@ -14,9 +16,25 @@ export const CATEGORY_META: Record<Category, CategoryMeta> = {
     pluralLabel: "Washing Machines",
     slug: "washer",
     capacityUnit: "kg",
+    tagline: "Front and top loaders, drum-cleaned and load-tested.",
+    image: "/images/placeholders/washer.svg",
   },
-  FRIDGE: { label: "Fridge", pluralLabel: "Fridges", slug: "fridge", capacityUnit: "L" },
-  DRYER: { label: "Dryer", pluralLabel: "Dryers", slug: "dryer", capacityUnit: "kg" },
+  FRIDGE: {
+    label: "Fridge",
+    pluralLabel: "Fridges",
+    slug: "fridge",
+    capacityUnit: "L",
+    tagline: "Top mount to side by side, sanitised and temperature-checked.",
+    image: "/images/placeholders/fridge.svg",
+  },
+  DRYER: {
+    label: "Dryer",
+    pluralLabel: "Dryers",
+    slug: "dryer",
+    capacityUnit: "kg",
+    tagline: "Vented and heat pump dryers, lint paths cleared.",
+    image: "/images/placeholders/dryer.svg",
+  },
 };
 
 export const CONDITION_LABELS: Record<Condition, string> = {
@@ -27,4 +45,14 @@ export const CONDITION_LABELS: Record<Condition, string> = {
 
 export function parseCategorySlug(slug: string | undefined): Category | undefined {
   return CATEGORIES.find((category) => CATEGORY_META[category].slug === slug);
+}
+
+export function formatCapacity({ capacity, category }: Product): string | undefined {
+  return capacity === undefined ? undefined : `${capacity}${CATEGORY_META[category].capacityUnit}`;
+}
+
+/** "60 × 85 × 56 cm" (W × H × D), or undefined if any side is missing. */
+export function formatDimensions({ widthCm, heightCm, depthCm }: Product): string | undefined {
+  if (widthCm === undefined || heightCm === undefined || depthCm === undefined) return undefined;
+  return `${widthCm} × ${heightCm} × ${depthCm} cm`;
 }
