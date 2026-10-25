@@ -1,6 +1,6 @@
 // Pure in-memory filtering, sorting and facet counts over the full product list. The catalogue is
 // small (~100 items), so the listing fetches everything once and narrows it here.
-import type { R_ProductDTO } from "@/common/visitors/response/product.dto";
+import type { ProductListingResponse } from "@/common/visitors/response/product.response";
 import type { Category } from "@/generated/prisma/enums";
 import {
   CATEGORIES,
@@ -38,18 +38,18 @@ export interface ProductFacets {
   priceRanges: FacetOption[];
 }
 
-const SORT_COMPARATORS: Record<SortOption, (a: R_ProductDTO, b: R_ProductDTO) => number> = {
+const SORT_COMPARATORS: Record<SortOption, (a: ProductListingResponse, b: ProductListingResponse) => number> = {
   newest: (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
   "price-asc": (a, b) => a.price - b.price,
   "price-desc": (a, b) => b.price - a.price,
 };
 
-export function isSold(product: R_ProductDTO): boolean {
+export function isSold(product: ProductListingResponse): boolean {
   return product.status === "SOLD";
 }
 
 export function filterProducts(
-  products: R_ProductDTO[],
+  products: ProductListingResponse[],
   {
     specialOnly = false,
     categories = [],
@@ -58,7 +58,7 @@ export function filterProducts(
     sort = DEFAULT_SORT,
     includeSold = false,
   }: ProductFilter = {},
-): R_ProductDTO[] {
+): ProductListingResponse[] {
   const ranges = PRICE_RANGES.filter((range) => priceRanges.includes(range.id));
 
   return products
@@ -74,9 +74,9 @@ export function filterProducts(
 }
 
 /** Filter options with counts across all in-stock products. */
-export function getProductFacets(allProducts: R_ProductDTO[]): ProductFacets {
+export function getProductFacets(allProducts: ProductListingResponse[]): ProductFacets {
   const products = filterProducts(allProducts);
-  const countWhere = (predicate: (product: R_ProductDTO) => boolean) =>
+  const countWhere = (predicate: (product: ProductListingResponse) => boolean) =>
     products.filter(predicate).length;
 
   const brandNames = [...new Set(products.map((product) => product.brand))].sort();

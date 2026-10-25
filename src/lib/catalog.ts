@@ -1,4 +1,4 @@
-import type { R_ProductDTO } from "@/common/visitors/response/product.dto";
+import type { ProductDetailResponse } from "@/common/visitors/response/product.response";
 import { Category, Condition } from "@/generated/prisma/enums";
 
 /** Schema order: washers, fridges, dryers. */
@@ -87,7 +87,7 @@ export function toBrandSlug(brand: string): string {
 export function formatCapacity({
   capacity,
   category,
-}: Pick<R_ProductDTO, "capacity" | "category">): string | undefined {
+}: Pick<ProductDetailResponse, "capacity" | "category">): string | undefined {
   return capacity === null ? undefined : `${capacity}${CATEGORY_META[category].capacityUnit}`;
 }
 
@@ -96,7 +96,7 @@ export function formatDimensions({
   widthCm,
   heightCm,
   depthCm,
-}: Pick<R_ProductDTO, "widthCm" | "heightCm" | "depthCm">): string | undefined {
+}: Pick<ProductDetailResponse, "widthCm" | "heightCm" | "depthCm">): string | undefined {
   if (widthCm === null || heightCm === null || depthCm === null) return undefined;
   return `${widthCm} × ${heightCm} × ${depthCm} cm`;
 }
@@ -112,7 +112,7 @@ export interface Discount {
 export function getDiscount({
   price,
   compareAtPrice,
-}: Pick<R_ProductDTO, "price" | "compareAtPrice">): Discount | undefined {
+}: Pick<ProductDetailResponse, "price" | "compareAtPrice">): Discount | undefined {
   if (compareAtPrice === null || compareAtPrice <= price) return undefined;
   const amount = compareAtPrice - price;
   return { amount, percent: Math.round((amount / compareAtPrice) * 100) };

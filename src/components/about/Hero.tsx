@@ -8,7 +8,7 @@ import Container from "@/components/common/Container";
 import { Button } from "@/components/ui/button";
 import { SHOP_SECTION_ID, getCategoryHref } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
-import type { R_ProductDTO } from "@/common/visitors/response/product.dto";
+import type { ProductListingResponse } from "@/common/visitors/response/product.response";
 import type { Category } from "@/generated/prisma/enums";
 import { CATEGORIES, CATEGORY_META } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
@@ -24,7 +24,7 @@ const HIGHLIGHTS = [
 // Staggered offsets and tilts make the tiles feel stacked rather than gridded.
 const TILE_STYLES = ["md:-rotate-3", "md:mt-10 md:rotate-2", "md:-rotate-1"];
 
-function getLowestPrice(products: R_ProductDTO[], category: Category): number | undefined {
+function getLowestPrice(products: ProductListingResponse[], category: Category): number | undefined {
   const prices = products
     .filter((product) => product.category === category)
     .map((product) => product.price);

@@ -5,10 +5,10 @@ import PriceTag from "@/components/product/PriceTag";
 import SoldOverlay from "@/components/product/SoldOverlay";
 import { CATEGORY_META, formatCapacity } from "@/lib/catalog";
 import { isSold } from "@/lib/product-filter";
-import type { R_ProductDTO } from "@/common/visitors/response/product.dto";
+import type { ProductListingResponse } from "@/common/visitors/response/product.response";
 
 interface ProductCardProps {
-  product: R_ProductDTO;
+  product: ProductListingResponse;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {

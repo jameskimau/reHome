@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 
 import ProductCard from "@/components/product/ProductCard";
-import type { R_ProductDTO } from "@/common/visitors/response/product.dto";
+import type { ProductListingResponse } from "@/common/visitors/response/product.response";
 
 interface ProductGridProps {
-  products: R_ProductDTO[];
+  products: ProductListingResponse[];
   /** Shown when there are no products. */
   emptyState?: ReactNode;
 }
