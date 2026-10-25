@@ -15,7 +15,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { countActiveFilters, type ProductQuery } from "@/lib/product-query";
-import type { ProductFacets } from "@/lib/products";
+import type { ProductFacets } from "@/lib/product-filter";
 
 interface MobileFilterSheetProps {
   query: ProductQuery;

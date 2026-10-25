@@ -9,9 +9,10 @@ const db = new PrismaClient({
 });
 
 async function main() {
-  for (const { isSold, ...product } of mockProducts) {
+  for (const { isSold, isSpecial = false, ...product } of mockProducts) {
     const data = {
       ...product,
+      isSpecial,
       // Let the DB assign cuids instead of the mock "p-001" ids.
       id: undefined,
       status: isSold ? ("SOLD" as const) : ("AVAILABLE" as const),

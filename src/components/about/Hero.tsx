@@ -2,16 +2,18 @@ import { ArrowRightIcon, ShieldCheckIcon, SparklesIcon, TruckIcon } from "lucide
 import Image from "next/image";
 import Link from "next/link";
 
+import { fetchProducts } from "@/actions/visitors/application/fetch-products";
 import CallButton from "@/components/common/CallButton";
 import Container from "@/components/common/Container";
 import { Button } from "@/components/ui/button";
 import { SHOP_SECTION_ID, getCategoryHref } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
-import { CATEGORY_META } from "@/lib/catalog";
+import type { R_ProductDTO } from "@/common/visitors/response/product.dto";
+import type { Category } from "@/generated/prisma/enums";
+import { CATEGORIES, CATEGORY_META } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
-import { getProducts } from "@/lib/products";
 import { cn } from "@/lib/utils";
-import { CATEGORIES, type Category, type Product } from "@/types/product";
+import { filterProducts } from "@/lib/product-filter";
 
 const HIGHLIGHTS = [
   { icon: ShieldCheckIcon, label: "Tested before sale" },
@@ -22,7 +24,7 @@ const HIGHLIGHTS = [
 // Staggered offsets and tilts make the tiles feel stacked rather than gridded.
 const TILE_STYLES = ["md:-rotate-3", "md:mt-10 md:rotate-2", "md:-rotate-1"];
 
-function getLowestPrice(products: Product[], category: Category): number | undefined {
+function getLowestPrice(products: R_ProductDTO[], category: Category): number | undefined {
   const prices = products
     .filter((product) => product.category === category)
     .map((product) => product.price);
@@ -30,7 +32,8 @@ function getLowestPrice(products: Product[], category: Category): number | undef
 }
 
 const Hero = async () => {
-  const products = await getProducts();
+  const response = await fetchProducts();
+  const products = filterProducts(response.data ?? []);
 
   return (
     <section className="relative overflow-hidden bg-primary text-primary-foreground">
@@ -40,22 +43,22 @@ const Hero = async () => {
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-40 -left-20 size-96 rounded-full bg-emerald-300/20 blur-3xl"
+        className="pointer-events-none absolute -bottom-40 -left-20 size-96 rounded-full bg-cta/25 blur-3xl"
       />
 
       <Container className="relative grid items-center gap-10 py-12 md:grid-cols-[1.15fr_1fr] md:py-20">
         <div className="space-y-6">
           <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-sm font-medium">
             <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-300 opacity-75" />
-              <span className="relative inline-flex size-2 rounded-full bg-emerald-300" />
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-75" />
+              <span className="relative inline-flex size-2 rounded-full bg-success" />
             </span>
             {products.length} appliances in stock · {siteConfig.serviceArea}
           </p>
 
           <h1 className="text-4xl font-extrabold tracking-tight text-balance sm:text-5xl lg:text-6xl">
             Quality used appliances,{" "}
-            <span className="text-emerald-200">without the new price tag.</span>
+            <span className="text-cta">without the new price tag.</span>
           </h1>
 
           <p className="max-w-xl text-lg text-primary-foreground/80">
@@ -85,7 +88,7 @@ const Hero = async () => {
           <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-primary-foreground/80">
             {HIGHLIGHTS.map(({ icon: Icon, label }) => (
               <li key={label} className="flex items-center gap-1.5">
-                <Icon className="size-4 text-emerald-200" aria-hidden="true" />
+                <Icon className="size-4 text-primary-foreground" aria-hidden="true" />
                 {label}
               </li>
             ))}
@@ -106,7 +109,7 @@ const Hero = async () => {
                   <div className="relative aspect-[3/4] bg-muted">
                     <Image src={meta.image} alt="" fill className="object-cover" />
                     {lowestPrice !== undefined && (
-                      <span className="absolute top-2 right-2 rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
+                      <span className="absolute top-2 right-2 rounded-full bg-cta px-2 py-0.5 text-xs font-semibold text-cta-foreground">
                         From {formatPrice(lowestPrice)}
                       </span>
                     )}

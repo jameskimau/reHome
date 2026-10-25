@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  
 }
 
 // Visitors never sign up; this table only holds staff who manage listings.
@@ -42,6 +41,8 @@ model Product {
   images         String[]
   description    String
   status         ProductStatus @default(AVAILABLE)
+  /// Hand-picked deal; drives the Special ribbon and filter.
+  isSpecial      Boolean       @default(false)
   soldAt         DateTime?
   /// Admin-only. Never select this in public queries.
   note           String?
@@ -52,6 +53,7 @@ model Product {
   @@index([status, price])
   @@index([category])
   @@index([brand])
+  @@index([isSpecial])
 }
 
 // ENUM

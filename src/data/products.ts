@@ -1,5 +1,31 @@
-// Temporary mock data until the backend exists. Only `@/lib/products` should import this.
-import type { Product } from "@/types/product";
+// Seed data for `prisma/seed.ts`. The app reads products from the database, not from here.
+import type { Category, Condition } from "@/generated/prisma/enums";
+
+interface MockProduct {
+  id: string;
+  slug: string;
+  title: string;
+  category: Category;
+  brand: string;
+  model: string;
+  /** Whole Australian dollars. */
+  price: number;
+  /** Typical new price, shown struck through. */
+  compareAtPrice?: number;
+  /** Hand-picked deal shown with the Special ribbon. */
+  isSpecial?: boolean;
+  condition: Condition;
+  capacity?: number;
+  widthCm?: number;
+  heightCm?: number;
+  depthCm?: number;
+  energyRating?: number;
+  warrantyMonths?: number;
+  images: string[];
+  description: string;
+  isSold: boolean;
+  createdAt: Date;
+}
 
 const PLACEHOLDER = {
   WASHER: "/images/placeholders/washer.svg",
@@ -7,7 +33,7 @@ const PLACEHOLDER = {
   DRYER: "/images/placeholders/dryer.svg",
 } as const;
 
-export const mockProducts: Product[] = [
+export const mockProducts: MockProduct[] = [
   {
     id: "p-001",
     slug: "lg-8kg-front-load-washer",
@@ -16,6 +42,8 @@ export const mockProducts: Product[] = [
     brand: "LG",
     model: "WV5-1408W",
     price: 420,
+    compareAtPrice: 799,
+    isSpecial: true,
     condition: "LIKE_NEW",
     capacity: 8,
     widthCm: 60,
@@ -58,6 +86,8 @@ export const mockProducts: Product[] = [
     brand: "Samsung",
     model: "WW10T654DLX",
     price: 550,
+    compareAtPrice: 1099,
+    isSpecial: true,
     condition: "LIKE_NEW",
     capacity: 10,
     widthCm: 60,
@@ -78,6 +108,8 @@ export const mockProducts: Product[] = [
     brand: "Westinghouse",
     model: "WTB4600WA",
     price: 480,
+    compareAtPrice: 899,
+    isSpecial: true,
     condition: "GOOD",
     capacity: 425,
     widthCm: 70,
@@ -99,6 +131,8 @@ export const mockProducts: Product[] = [
     brand: "Samsung",
     model: "SRS673DMB",
     price: 890,
+    compareAtPrice: 1599,
+    isSpecial: true,
     condition: "LIKE_NEW",
     capacity: 635,
     widthCm: 91,
@@ -139,6 +173,8 @@ export const mockProducts: Product[] = [
     brand: "Electrolux",
     model: "EDH803BEWA",
     price: 620,
+    compareAtPrice: 1199,
+    isSpecial: true,
     condition: "LIKE_NEW",
     capacity: 8,
     widthCm: 60,
@@ -159,6 +195,8 @@ export const mockProducts: Product[] = [
     brand: "Simpson",
     model: "SDV656HQWA",
     price: 180,
+    compareAtPrice: 349,
+    isSpecial: true,
     condition: "GOOD",
     capacity: 6,
     widthCm: 60,

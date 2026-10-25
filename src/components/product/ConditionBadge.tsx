@@ -1,12 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import { CONDITION_LABELS } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
-import type { Condition } from "@/types/product";
+import type { Condition } from "@/generated/prisma/enums";
 
 const CONDITION_STYLES: Record<Condition, string> = {
-  LIKE_NEW: "bg-emerald-100 text-emerald-800",
-  GOOD: "bg-sky-100 text-sky-800",
-  FAIR: "bg-amber-100 text-amber-800",
+  LIKE_NEW: "bg-success text-success-foreground",
+  GOOD: "bg-primary text-primary-foreground",
+  FAIR: "bg-secondary text-secondary-foreground",
 };
 
 interface ConditionBadgeProps {

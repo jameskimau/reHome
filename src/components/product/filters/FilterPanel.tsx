@@ -18,10 +18,11 @@ import {
   type FilterKey,
   type ProductQuery,
 } from "@/lib/product-query";
-import type { ProductFacets } from "@/lib/products";
+import type { ProductFacets } from "@/lib/product-filter";
 import { cn } from "@/lib/utils";
 
 const SECTIONS: { key: FilterKey; title: string }[] = [
+  { key: "specials", title: "Special" },
   { key: "categories", title: "Category" },
   { key: "brands", title: "Brand" },
   { key: "priceRanges", title: "Price" },

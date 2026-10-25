@@ -3,7 +3,7 @@
 import { useId } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import type { FacetOption } from "@/lib/products";
+import type { FacetOption } from "@/lib/product-filter";
 import { cn } from "@/lib/utils";
 
 interface FilterCheckboxItemProps {

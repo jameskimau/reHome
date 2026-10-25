@@ -3,10 +3,10 @@ import type { ReactNode } from "react";
 import { siteConfig } from "@/config/site";
 import { CATEGORY_META, CONDITION_LABELS, formatCapacity, formatDimensions } from "@/lib/catalog";
 import { formatPhone, toTelHref } from "@/lib/format";
-import type { Product } from "@/types/product";
+import type { R_ProductDTO } from "@/common/visitors/response/product.dto";
 
 interface ProductSpecsProps {
-  product: Product;
+  product: R_ProductDTO;
 }
 
 interface Spec {
@@ -14,7 +14,7 @@ interface Spec {
   value: ReactNode;
 }
 
-function buildSpecs(product: Product): Spec[] {
+function buildSpecs(product: R_ProductDTO): Spec[] {
   return [
     { label: "Type", value: CATEGORY_META[product.category].label },
     { label: "Brand", value: product.brand },
