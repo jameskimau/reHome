@@ -19,7 +19,7 @@ const CallButton = ({
   label = "Call to buy",
   showNumber = false,
   size = "lg",
-  variant = "default",
+  variant = "cta",
   className,
 }: CallButtonProps) => {
   const phoneNumber = formatPhone(siteConfig.phone);
