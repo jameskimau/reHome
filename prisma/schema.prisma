@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  
+}
+
+// Visitors never sign up; this table only holds staff who manage listings.
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  title          String
+  category       Category
+  brand          String
+  model          String
+  /// Selling price in whole Australian dollars.
+  price          Int
+  /// Original price shown struck through; null when not discounted.
+  compareAtPrice Int?
+  condition      Condition
+  /// Kilograms for washers/dryers, litres for fridges.
+  capacity       Float?
+  widthCm        Int?
+  heightCm       Int?
+  depthCm        Int?
+  /// Australian energy star rating, e.g. 4.5.
+  energyRating   Float?
+  warrantyMonths Int?
+  /// Ordered image URLs; the first is the cover image.
+  images         String[]
+  description    String
+  status         ProductStatus @default(AVAILABLE)
+  soldAt         DateTime?
+  /// Admin-only. Never select this in public queries.
+  note           String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([status, price])
+  @@index([category])
+  @@index([brand])
+}
+
+// ENUM
+enum Role {
+  ADMIN
+}
+
+enum Category {
+  WASHER
+  FRIDGE
+  DRYER
+}
+
+enum Condition {
+  LIKE_NEW
+  GOOD
+  FAIR
+}
+
+enum ProductStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+}

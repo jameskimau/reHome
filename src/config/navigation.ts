@@ -1,6 +1,3 @@
-import { CATEGORY_META } from "@/lib/catalog";
-import { CATEGORIES } from "@/types/product";
-
 export interface NavLink {
   href: string;
   label: string;
@@ -17,10 +14,8 @@ export function getCategoryHref(slug: string): string {
 }
 
 export const mainNav: NavLink[] = [
-  { href: `/#${SHOP_SECTION_ID}`, label: "Shop All" },
-  ...CATEGORIES.map((category) => ({
-    href: getCategoryHref(CATEGORY_META[category].slug),
-    label: CATEGORY_META[category].pluralLabel,
-  })),
+  { href: "/", label: "Home" },
+  { href: `/#${SHOP_SECTION_ID}`, label: "Shop" },
   { href: "/about", label: "About" },
+  { href: `/about#${LOCATION_SECTION_ID}`, label: "Contact" },
 ];

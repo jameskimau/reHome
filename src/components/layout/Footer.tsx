@@ -2,8 +2,7 @@ import { cacheLife } from "next/cache";
 import Link from "next/link";
 
 import Container from "@/components/common/Container";
-import Logo from "@/components/layout/Logo";
-import { LOCATION_SECTION_ID, mainNav } from "@/config/navigation";
+import { LOCATION_SECTION_ID } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { formatAddress, formatPhone, toTelHref } from "@/lib/format";
 
@@ -19,25 +18,7 @@ const Footer = async () => {
 
   return (
     <footer className="mt-auto border-t bg-muted/40">
-      <Container className="grid gap-8 py-10 sm:grid-cols-3">
-        <div className="space-y-3">
-          <Logo />
-          <p className="text-sm text-muted-foreground">{siteConfig.description}</p>
-        </div>
-
-        <nav aria-label="Footer" className="space-y-3">
-          <h2 className="text-sm font-semibold">Shop</h2>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            {mainNav.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="hover:text-foreground">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
+      <Container className="py-10">
         <div className="space-y-3">
           <h2 className="text-sm font-semibold">Contact</h2>
           <ul className="space-y-2 text-sm text-muted-foreground">
