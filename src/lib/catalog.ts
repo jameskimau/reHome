@@ -1,4 +1,9 @@
-import { CATEGORIES, type Category, type Condition, type Product } from "@/types/product";
+import type { R_ProductDTO } from "@/common/visitors/response/product.dto";
+import { Category, Condition } from "@/generated/prisma/enums";
+
+/** Schema order: washers, fridges, dryers. */
+export const CATEGORIES = Object.values(Category);
+export const CONDITIONS = Object.values(Condition);
 
 interface CategoryMeta {
   label: string;
@@ -79,12 +84,36 @@ export function toBrandSlug(brand: string): string {
     .replace(/^-|-$/g, "");
 }
 
-export function formatCapacity({ capacity, category }: Product): string | undefined {
-  return capacity === undefined ? undefined : `${capacity}${CATEGORY_META[category].capacityUnit}`;
+export function formatCapacity({
+  capacity,
+  category,
+}: Pick<R_ProductDTO, "capacity" | "category">): string | undefined {
+  return capacity === null ? undefined : `${capacity}${CATEGORY_META[category].capacityUnit}`;
 }
 
 /** "60 × 85 × 56 cm" (W × H × D), or undefined if any side is missing. */
-export function formatDimensions({ widthCm, heightCm, depthCm }: Product): string | undefined {
-  if (widthCm === undefined || heightCm === undefined || depthCm === undefined) return undefined;
+export function formatDimensions({
+  widthCm,
+  heightCm,
+  depthCm,
+}: Pick<R_ProductDTO, "widthCm" | "heightCm" | "depthCm">): string | undefined {
+  if (widthCm === null || heightCm === null || depthCm === null) return undefined;
   return `${widthCm} × ${heightCm} × ${depthCm} cm`;
+}
+
+export interface Discount {
+  /** Whole dollars off the struck-through price. */
+  amount: number;
+  /** Rounded percentage off, e.g. 26. */
+  percent: number;
+}
+
+/** Savings against `compareAtPrice`, or undefined when the product isn't discounted. */
+export function getDiscount({
+  price,
+  compareAtPrice,
+}: Pick<R_ProductDTO, "price" | "compareAtPrice">): Discount | undefined {
+  if (compareAtPrice === null || compareAtPrice <= price) return undefined;
+  const amount = compareAtPrice - price;
+  return { amount, percent: Math.round((amount / compareAtPrice) * 100) };
 }

@@ -7,20 +7,26 @@ import {
   parseCategorySlug,
   type SortOption,
 } from "@/lib/catalog";
-import type { ProductFilter } from "@/lib/products";
-import type { Category } from "@/types/product";
+import type { Category } from "@/generated/prisma/enums";
+import type { ProductFilter } from "@/lib/product-filter";
 
-/** URL-level values: category slugs, brand slugs, price range ids. */
+/** URL-level values: special flag, category slugs, brand slugs, price range ids. */
 export interface ProductQuery {
+  /** ["1"] when only specials are shown, otherwise empty. */
+  specials: string[];
   categories: string[];
   brands: string[];
   priceRanges: string[];
   sort: SortOption;
 }
 
-export type FilterKey = "categories" | "brands" | "priceRanges";
+export type FilterKey = "specials" | "categories" | "brands" | "priceRanges";
+
+/** The only accepted value for ?special=. */
+export const SPECIAL_VALUE = "1";
 
 export const EMPTY_QUERY: ProductQuery = {
+  specials: [],
   categories: [],
   brands: [],
   priceRanges: [],
@@ -43,6 +49,9 @@ function isSortOption(value: unknown): value is SortOption {
 
 export function parseProductQuery(params: SearchParams): ProductQuery {
   return {
+    specials: readList(params.special)
+      .filter((value) => value === SPECIAL_VALUE)
+      .slice(0, 1),
     categories: readList(params.category).filter((slug) => parseCategorySlug(slug) !== undefined),
     brands: readList(params.brand),
     priceRanges: readList(params.price).filter((id) =>
@@ -55,6 +64,7 @@ export function parseProductQuery(params: SearchParams): ProductQuery {
 /** The shop listing lives on the home page. */
 export function buildShopHref(query: ProductQuery): string {
   const entries: [string, string][] = [
+    ["special", query.specials.join(",")],
     ["category", query.categories.join(",")],
     ["brand", query.brands.join(",")],
     ["price", query.priceRanges.join(",")],
@@ -73,11 +83,14 @@ export function toggleValue(list: string[], value: string): string[] {
 }
 
 export function countActiveFilters(query: ProductQuery): number {
-  return query.categories.length + query.brands.length + query.priceRanges.length;
+  return (
+    query.specials.length + query.categories.length + query.brands.length + query.priceRanges.length
+  );
 }
 
 export function toProductFilter(query: ProductQuery): ProductFilter {
   return {
+    specialOnly: query.specials.includes(SPECIAL_VALUE),
     categories: query.categories
       .map(parseCategorySlug)
       .filter((category): category is Category => category !== undefined),

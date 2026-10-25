@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { fetchProducts } from "@/actions/visitors/application/fetch-products";
 import EmptyState from "@/components/common/EmptyState";
 import FilterPanel from "@/components/product/filters/FilterPanel";
 import MobileFilterSheet from "@/components/product/filters/MobileFilterSheet";
@@ -14,7 +15,7 @@ import {
   toProductFilter,
   type ProductQuery,
 } from "@/lib/product-query";
-import { getProductFacets, getProducts } from "@/lib/products";
+import { filterProducts, getProductFacets } from "@/lib/product-filter";
 
 interface ProductListingProps {
   searchParams: PageProps<"/">["searchParams"];
@@ -28,10 +29,12 @@ function getListingTitle({ categories }: ProductQuery): string {
 // Reads searchParams, so it must render inside <Suspense> (Cache Components).
 const ProductListing = async ({ searchParams }: ProductListingProps) => {
   const query = parseProductQuery(await searchParams);
-  const [products, facets] = await Promise.all([
-    getProducts(toProductFilter(query)),
-    getProductFacets(),
-  ]);
+  const response = await fetchProducts();
+  if (!response.success) throw new Error(response.message);
+
+  const allProducts = response.data ?? [];
+  const products = filterProducts(allProducts, toProductFilter(query));
+  const facets = getProductFacets(allProducts);
 
   return (
     <div className="grid gap-8 md:grid-cols-[240px_1fr] lg:grid-cols-[260px_1fr]">
