@@ -14,7 +14,7 @@ import { db } from "@/lib/db";
 ==================================================
 Date: 2026-10-25 16:41
 Purpose: INFRA STRUCTURE LAYER
-Description: CALL PRISMA REPO TO FETCH DATA FROM DATABASE
+Description: CALL PRISMA REPO TO FETCH DATA FROM DATABASE - THIS FILE SHOULD CONTAIN PURE DB LOGIC AND NO BUSINESS LOGIC
 ==================================================
 */
 // LISTING FOR ROUGH DETAILS
@@ -49,7 +49,10 @@ const DETAIL_SELECT = {
 } satisfies Record<keyof ProductDetailResponse, true>;
 
 // SRP - SINGLE RESPONSIBILITY PRINCIPLE - THIS REPO IS ONLY FOR VISITORS
+// OOP - Object Oriented Programming - THIS REPO IS ONLY FOR VISITORS
+// FETCH REAL DATA FROM DATABASE
 // BASED ON REPO CONTRACT IN DOMAIN LAYER
+// PURE LOGIC TO FETCH DB FROM NEON
 export const visitorProductRepo: VisitorProductRepo = {
   async fetchProducts() {
     try {

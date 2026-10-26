@@ -7,6 +7,13 @@ import { adminProductRepo } from "@/actions/admin/infrastructure/product.repo.pr
 import { C_ProductIdDTOSchema } from "@/common/admin/payload/product.dto";
 import { fail, type ServerResponseDTO } from "@/common/server-response";
 
+/*
+==================================================
+Date: 2026-10-26 20:28
+Purpose: APPLICATION LOGIC - BUSINESS LOGIC LAYER - BEFORE CALLING INFRASTRUCTURE LAYER(PURE DB)
+Description: 
+==================================================
+*/
 export async function deleteProduct(input: { id: string }): Promise<ServerResponseDTO<null>> {
   // TODO(neon-auth): require an admin session.
 

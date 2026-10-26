@@ -15,7 +15,7 @@ export default async function EditProductPage({ params }: PageProps<"/admin/prod
 
   const product = response.data;
   if (!product) notFound();
-
+  // BUILD UI
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
