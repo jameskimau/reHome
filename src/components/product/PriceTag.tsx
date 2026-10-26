@@ -1,3 +1,4 @@
+import WebsitePriceInfo from "@/components/product/WebsitePriceInfo";
 import { getDiscount } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -53,9 +54,9 @@ const PriceTag = ({ price, compareAtPrice = null, size = "md", className }: Pric
       >
         {formatPrice(price)}
       </p>
-      <p className={cn("font-semibold", large ? "text-sm" : "text-xs")}>
+      <WebsitePriceInfo className={cn("font-semibold", large ? "text-sm" : "text-xs")}>
         You save {formatPrice(discount.amount)}
-      </p>
+      </WebsitePriceInfo>
     </div>
   );
 };

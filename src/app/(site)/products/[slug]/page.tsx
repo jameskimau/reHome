@@ -67,9 +67,16 @@ const ProductDetailPage = async ({ params }: PageProps<"/products/[slug]">) => {
 
         <div className="space-y-6">
           <div className="space-y-4">
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
               <StockStatus status={product.status} />
-              {!sold && <DeliveryBadge />}
+              {!sold && (
+                <>
+                  <span aria-hidden="true" className="font-bold text-muted-foreground">
+                    ·
+                  </span>
+                  <DeliveryBadge />
+                </>
+              )}
             </div>
             <p className="text-sm font-semibold tracking-wide text-muted-foreground uppercase">
               {product.brand} · {product.model}

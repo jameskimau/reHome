@@ -16,10 +16,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const sold = isSold(product);
 
   return (
-    <Link
-      href={`/products/${product.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-xl border bg-card transition-shadow hover:shadow-md focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-    >
+    // The title link stretches over the whole card (after:inset-0), so the price info button can
+    // sit on top of it without nesting a button inside a link.
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border bg-card transition-shadow hover:shadow-md has-[a:focus-visible]:ring-3 has-[a:focus-visible]:ring-ring/50">
       <div className="relative aspect-square overflow-hidden bg-muted">
         <Image
           src={product.images[0] ?? CATEGORY_META[product.category].image}
@@ -43,12 +42,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
           {capacity && ` · ${capacity}`}
         </p>
         {/* Reserve two lines so cards stay the same height whether the title wraps or not. */}
-        <h3 className="line-clamp-2 min-h-[2lh] leading-snug font-semibold">{product.title}</h3>
+        <h3 className="line-clamp-2 min-h-[2lh] leading-snug font-semibold">
+          <Link
+            href={`/products/${product.slug}`}
+            className="outline-none after:absolute after:inset-0"
+          >
+            {product.title}
+          </Link>
+        </h3>
         <div className="mt-auto pt-2">
           <PriceTag price={product.price} compareAtPrice={product.compareAtPrice} />
         </div>
       </div>
-    </Link>
+    </article>
   );
 };
 

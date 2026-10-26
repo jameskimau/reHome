@@ -1,3 +1,5 @@
+import WebsitePriceInfo from "@/components/product/WebsitePriceInfo";
+import { WEBSITE_PRICE_QUESTION } from "@/components/product/website-price";
 import { getDiscount } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -14,8 +16,8 @@ const PriceBox = ({ price, compareAtPrice, className }: PriceBoxProps) => {
   const savings = getDiscount({ price, compareAtPrice });
 
   return (
-    <div className={cn("w-full max-w-60", savings && "pt-4", className)}>
-      <div className="relative border-2 border-foreground">
+    <div className={cn("space-y-3", savings && "pt-4", className)}>
+      <div className="relative w-full max-w-60 border-2 border-foreground">
         {savings && compareAtPrice !== null && (
           <p className="absolute top-0 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 bg-foreground px-3 py-1 text-sm font-bold text-background tabular-nums">
             <span className="sr-only">Was </span>
@@ -48,6 +50,12 @@ const PriceBox = ({ price, compareAtPrice, className }: PriceBoxProps) => {
           )}
         </div>
       </div>
+
+      {savings && (
+        <WebsitePriceInfo iconFirst side="bottom" className="gap-2 text-sm font-semibold [&>svg]:text-cta">
+          {WEBSITE_PRICE_QUESTION}
+        </WebsitePriceInfo>
+      )}
     </div>
   );
 };
