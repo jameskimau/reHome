@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 
 import ProductForm from "@/components/admin/ProductForm";
-import { requireAdmin } from "@/lib/session";
 
 export const metadata: Metadata = { title: "New product" };
 
 export default async function NewProductPage() {
-  await requireAdmin();
+  // TODO(neon-auth): require an admin session.
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
