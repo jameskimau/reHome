@@ -1,12 +1,10 @@
 import "server-only";
 
-import { connection } from "next/server";
-
 import { adminProductRepo } from "@/actions/admin/infrastructure/product.repo.prisma";
+import { requireAdmin } from "@/lib/auth/admin";
 
 // Not cached: includes admin-only notes and must always be current.
 export async function fetchAdminProducts() {
-  // TODO(neon-auth): require an admin session.
-  await connection();
+  await requireAdmin();
   return adminProductRepo.fetchProducts();
 }

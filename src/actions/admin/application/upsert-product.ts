@@ -1,7 +1,6 @@
 "use server";
 
 import { randomBytes } from "node:crypto";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -12,6 +11,7 @@ import {
   C_UpsertProductDTOSchema,
   type D_UpsertProductDTO,
 } from "@/common/admin/payload/product.dto";
+import { requireAdmin } from "@/lib/auth/admin";
 import { toBrandSlug as slugify } from "@/lib/catalog";
 
 const SLUG_TAKEN = "That slug is already in use";
@@ -26,20 +26,7 @@ export async function upsertProduct(
   _prev: FormState,
   formData: FormData,
 ): Promise<FormState> {
-  const authBaseUrl = process.env.NEON_AUTH_BASE_URL;
-  const cookieHeader = (await cookies()).toString();
-  if (!authBaseUrl || !cookieHeader) redirect("/admin/login");
-
-  const sessionResponse = await fetch(`${authBaseUrl}/api/auth/get-session`, {
-    headers: { cookie: cookieHeader },
-    cache: "no-store",
-  });
-  if (!sessionResponse.ok) redirect("/admin/login");
-
-  const session = (await sessionResponse.json()) as {
-    user?: { role?: string };
-  } | null;
-  if (session?.user?.role !== "admin") redirect("/admin/login");
+  await requireAdmin();
 
   const raw = Object.fromEntries(formData);
   const values = Object.fromEntries(
