@@ -10,6 +10,11 @@ const optionalInt = z.preprocess(emptyToNull, z.coerce.number().int().positive()
 const optionalNumber = z.preprocess(emptyToNull, z.coerce.number().positive().nullable());
 const optionalText = z.preprocess(emptyToNull, z.string().trim().nullable());
 
+export const MAX_IMAGES = 12;
+export const MAX_IMAGE_MB = 4;
+// Keep under serverActions.bodySizeLimit (9mb) and the proxy's 10MB body buffer.
+export const MAX_UPLOAD_MB = 8;
+
 // One image per line. Local paths ("/images/...") or https URLs.
 const imageList = z.preprocess(
   (value) =>
@@ -28,7 +33,7 @@ const imageList = z.preprocess(
           "Use a /path or an https:// URL",
         ),
     )
-    .max(12, "Up to 12 images"),
+    .max(MAX_IMAGES, `Up to ${MAX_IMAGES} images`),
 );
 
 // ------------------------------------------------------------------------------------------------
@@ -75,6 +80,19 @@ export const C_UpsertProductDTOSchema = z
 export const D_UpsertProductDTOSchema = C_UpsertProductDTOSchema.safeExtend({
   slug: z.string(),
 });
+
+/** New photos picked in the form; uploaded by the application layer, then appended to `images`. */
+export const C_ImageFilesDTOSchema = z
+  .array(
+    z
+      .file()
+      .mime(["image/jpeg", "image/png", "image/webp", "image/avif"], "JPEG, PNG, WebP or AVIF only")
+      .max(MAX_IMAGE_MB * 1024 * 1024, `Each photo must be under ${MAX_IMAGE_MB}MB`),
+  )
+  .refine(
+    (files) => files.reduce((sum, file) => sum + file.size, 0) <= MAX_UPLOAD_MB * 1024 * 1024,
+    `Up to ${MAX_UPLOAD_MB}MB of photos per save`,
+  );
 
 export const C_ProductIdDTOSchema = z.object({ id: z.string().min(1) });
 

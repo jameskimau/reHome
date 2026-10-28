@@ -1,12 +1,11 @@
 import { defineConfig } from "@neon/config/v1";
-
+// NEON설정 파일
 export default defineConfig({
-  // Declare your Neon services here
-  // Neon Auth (Managed Better Auth): admin sign-in. Admins get the "admin" role in the Console.
+  // 인증기능 활성화
   auth: true,
   buckets: {
-    // "private" is the default; use "public_read" for anonymous reads
-    assets: { access: "private" },
+    // public_read 버킷을 생성하고, 모든 파일에 대해 public_read 권한을 부여
+    assets: { access: "public_read" },
   },
   // Branch policy: per-branch tuning
   branch: (branch) => {

@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { FormState } from "@/common/admin/form-state";
+import { MAX_UPLOAD_MB } from "@/common/admin/payload/product.dto";
+import ImageDropzone from "@/components/admin/ImageDropzone";
 import type { AdminProductDetailResponse } from "@/common/admin/response/product.response";
 import { CATEGORIES, CATEGORY_META, CONDITIONS, CONDITION_LABELS } from "@/lib/catalog";
 
@@ -243,10 +245,16 @@ const ProductForm = ({ product }: ProductFormProps) => {
       </Section>
 
       <Section title="Photos & description">
+        <Field name="imageFiles" label="Upload photos" state={state}>
+          <ImageDropzone
+            name="imageFiles"
+            hint={`Resized automatically. Up to ${MAX_UPLOAD_MB}MB per save; added after the URLs below`}
+          />
+        </Field>
         <Field
           name="images"
           label="Image URLs"
-          hint="One per line; the first is the cover. /images/... paths or https:// URLs"
+          hint="One per line; the first is the cover. Uploaded photos appear here after saving. Delete a line to remove it"
           state={state}
         >
           <Textarea id="images" name="images" rows={3} defaultValue={value("images")} />

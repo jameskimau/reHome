@@ -32,5 +32,6 @@ export function getAuth(): NeonAuth {
     // 주소와 도장으로 클라이언트를 만들어 보관함에 넣는다.
     instance = createNeonAuth({ baseUrl, cookies: { secret } });
   }
+  // 새로운 인스턴스를 반환해줌
   return instance;
 }
