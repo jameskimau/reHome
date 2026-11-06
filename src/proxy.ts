@@ -10,6 +10,11 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // 회원가입 페이지는 로그인 전에 열려야 하므로 통과 (로그인 페이지는 SDK가 알아서 통과시킴)
+  if (request.nextUrl.pathname === "/admin/sign-up") {
+    return NextResponse.next();
+  }
+
   // 사용자가 로그인했는지 확인 POST / UPDATE / DELETE 요청은 requireAdmin()에서 검사하므로 여기서는 GET만 검사
   const authMiddleware = getAuth().middleware({
     loginUrl: "/admin/sign-in",

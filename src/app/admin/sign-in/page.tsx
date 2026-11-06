@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import SignInForm from "@/components/admin/SignInForm";
 import Logo from "@/components/layout/Logo";
 
 export const metadata: Metadata = { title: "Admin sign in" };
 
-// Static: no session read here. Accounts are created in the Neon Console (Auth → Users), and only
-// users given the admin role there can get past requireAdmin().
+// Static: no session read here. Anyone can create an account at /admin/sign-up, but only users
+// given the admin role in the Neon Console (Auth → Users) get past requireAdmin().
 export default function AdminSignInPage() {
   return (
     <div className="flex flex-1 items-center justify-center px-4 py-16">
@@ -16,6 +17,12 @@ export default function AdminSignInPage() {
           <h1 className="text-xl font-bold">Admin sign in</h1>
         </div>
         <SignInForm />
+        <p className="text-center text-sm text-muted-foreground">
+          No account yet?
+          <Link href="/admin/sign-up" className="font-medium text-foreground underline">
+            Create one
+          </Link>
+        </p>
       </div>
     </div>
   );
