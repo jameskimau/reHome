@@ -1,8 +1,10 @@
+import { PencilIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 import StatusSelect from "@/components/admin/StatusSelect";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -27,9 +29,9 @@ const AdminProductTable = ({ products }: AdminProductTableProps) => {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border bg-card">
+    <div className="overflow-x-auto rounded-xl border bg-card [&_td]:px-4 [&_td]:py-3 [&_th]:px-4">
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-muted/40">
           <TableRow>
             <TableHead className="w-16" />
             <TableHead>Product</TableHead>
@@ -55,12 +57,16 @@ const AdminProductTable = ({ products }: AdminProductTableProps) => {
                 </div>
               </TableCell>
               <TableCell className="max-w-64">
-                <p className="truncate font-medium">{product.title}</p>
-                <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                  {product.brand} · {CATEGORY_META[product.category].label}
+                <div className="flex items-center gap-2">
+                  <p className="min-w-0 truncate font-medium">{product.title}</p>
                   {product.isSpecial && (
-                    <Badge className="bg-cta text-cta-foreground">Special</Badge>
+                    <Badge className="h-5 shrink-0 bg-cta px-1.5 text-[11px] text-cta-foreground">
+                      Special
+                    </Badge>
                   )}
+                </div>
+                <p className="truncate text-xs text-muted-foreground">
+                  {product.brand} · {CATEGORY_META[product.category].label}
                 </p>
               </TableCell>
               <TableCell className="whitespace-nowrap">
@@ -81,12 +87,12 @@ const AdminProductTable = ({ products }: AdminProductTableProps) => {
                 {dateFormat.format(product.updatedAt)}
               </TableCell>
               <TableCell className="text-right">
-                <Link
-                  href={`/admin/products/${product.id}/edit`}
-                  className="text-sm font-medium text-primary hover:underline"
-                >
-                  Edit
-                </Link>
+                <Button asChild variant="outline" size="sm">
+                  <Link href={`/admin/products/${product.id}/edit`}>
+                    <PencilIcon aria-hidden="true" />
+                    Edit
+                  </Link>
+                </Button>
               </TableCell>
             </TableRow>
           ))}
