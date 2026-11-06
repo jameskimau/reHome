@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label";
 // COMPONENT
 const SignUpForm = () => {
   // USE ACTION자체가 서버쪽 State를 실행하는 함수임.
+  // FORM ACTION = SIGNUP
+
   const [state, formAction, pending] = useActionState(signUp, null);
 
   if (state?.success) {

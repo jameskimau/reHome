@@ -24,6 +24,7 @@ export async function isAdmin(): Promise<boolean> {
   // 3) role이 "admin"일 때만 true.
   //    ?. 는 "값이 없으면 에러 대신 undefined"라는 뜻이다. (로그인 안 했으면 false가 됨)
   const role = session?.user?.role;
+  // RETURN TRUE IF ROLE IS ADMIN, OTHERWISE RETURN FALSE
   return role === "admin";
 }
 
