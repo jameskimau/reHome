@@ -66,12 +66,7 @@ function getClient(): S3Client {
   return client;
 }
 
-/**
- * 사진 파일 하나를 `folder/` 아래에 올리고, 누구나 볼 수 있는 URL을 돌려준다.
- *
- * 사용 예: uploadImage(file, "products") → "https://.../assets/products/3f2a...c9.jpg"
- * 이 URL을 Product.images에 그대로 저장하면 손님 화면에 사진이 뜬다.
- */
+// 실제 이미지 업로드 해주기
 export async function uploadImage(file: File, folder: string): Promise<string> {
   // 1) 저장할 파일 이름(key)을 만든다. 예: "products/3f2a...c9.jpg"
   //    원래 파일 이름(IMG_1234.jpg) 대신 랜덤 ID를 써서 이름이 겹쳐 덮어쓰는 일이 없게 한다.
