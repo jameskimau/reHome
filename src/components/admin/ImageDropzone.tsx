@@ -117,7 +117,7 @@ const ImageDropzone = ({ name, hint }: ImageDropzoneProps) => {
       >
         <ImagePlusIcon className="size-6 text-muted-foreground" aria-hidden="true" />
         <span className="font-medium">
-          {busy ? "Preparing photos…" : "Drag photos here or click to choose"}
+          {busy ? "사진 준비 중…" : "사진을 여기로 끌어다 놓거나 클릭해서 선택하세요"}
         </span>
         <span className="text-xs text-muted-foreground">{hint}</span>
         <input
@@ -141,7 +141,7 @@ const ImageDropzone = ({ name, hint }: ImageDropzoneProps) => {
               <button
                 type="button"
                 onClick={() => remove(item)}
-                aria-label={`Remove ${item.file.name}`}
+                aria-label={`${item.file.name} 삭제`}
                 className="absolute top-1 right-1 rounded-full bg-background/90 p-1 shadow-sm hover:bg-background"
               >
                 <XIcon className="size-3.5" />

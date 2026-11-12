@@ -30,10 +30,10 @@ const imageList = z.preprocess(
         .string()
         .refine(
           (src) => src.startsWith("/") || src.startsWith("https://"),
-          "Use a /path or an https:// URL",
+          "/경로 또는 https:// 주소를 입력해주세요",
         ),
     )
-    .max(MAX_IMAGES, `Up to ${MAX_IMAGES} images`),
+    .max(MAX_IMAGES, `이미지는 최대 ${MAX_IMAGES}장까지 가능합니다`),
 );
 
 // ------------------------------------------------------------------------------------------------
@@ -43,22 +43,22 @@ const imageList = z.preprocess(
 // ------------------------------------------------------------------------------------------------
 export const C_UpsertProductDTOSchema = z
   .object({
-    title: z.string().trim().min(1, "Required"),
+    title: z.string().trim().min(1, "필수 항목입니다"),
     /** Optional; generated from the title when empty. */
     slug: z.preprocess(
       emptyToNull,
       z
         .string()
         .trim()
-        .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Lowercase letters, numbers and dashes only")
+        .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "영문 소문자, 숫자, 하이픈(-)만 사용할 수 있습니다")
         .nullable(),
     ),
     category: z.enum(Category),
-    brand: z.string().trim().min(1, "Required"),
-    model: z.string().trim().min(1, "Required"),
+    brand: z.string().trim().min(1, "필수 항목입니다"),
+    model: z.string().trim().min(1, "필수 항목입니다"),
     condition: z.enum(Condition),
     status: z.enum(ProductStatus),
-    price: z.coerce.number().int("Whole dollars only").positive("Must be more than 0"),
+    price: z.coerce.number().int("달러 단위 정수만 입력해주세요").positive("0보다 커야 합니다"),
     compareAtPrice: optionalInt,
     // Checkbox: "on" when ticked, missing otherwise.
     isSpecial: z.preprocess((value) => value === "on" || value === true, z.boolean()),
@@ -69,12 +69,12 @@ export const C_UpsertProductDTOSchema = z
     energyRating: z.preprocess(emptyToNull, z.coerce.number().min(0).max(10).nullable()),
     warrantyMonths: optionalInt,
     images: imageList,
-    description: z.string().trim().min(1, "Required"),
+    description: z.string().trim().min(1, "필수 항목입니다"),
     note: optionalText,
   })
   .refine((data) => data.compareAtPrice === null || data.compareAtPrice > data.price, {
     path: ["compareAtPrice"],
-    message: "Must be higher than the selling price",
+    message: "판매가보다 높아야 합니다",
   });
 
 export const D_UpsertProductDTOSchema = C_UpsertProductDTOSchema.safeExtend({
@@ -86,12 +86,15 @@ export const C_ImageFilesDTOSchema = z
   .array(
     z
       .file()
-      .mime(["image/jpeg", "image/png", "image/webp", "image/avif"], "JPEG, PNG, WebP or AVIF only")
-      .max(MAX_IMAGE_MB * 1024 * 1024, `Each photo must be under ${MAX_IMAGE_MB}MB`),
+      .mime(
+        ["image/jpeg", "image/png", "image/webp", "image/avif"],
+        "JPEG, PNG, WebP, AVIF 파일만 가능합니다",
+      )
+      .max(MAX_IMAGE_MB * 1024 * 1024, `사진 한 장당 ${MAX_IMAGE_MB}MB 이하여야 합니다`),
   )
   .refine(
     (files) => files.reduce((sum, file) => sum + file.size, 0) <= MAX_UPLOAD_MB * 1024 * 1024,
-    `Up to ${MAX_UPLOAD_MB}MB of photos per save`,
+    `저장 1회당 사진은 최대 ${MAX_UPLOAD_MB}MB까지 가능합니다`,
   );
 
 export const C_ProductIdDTOSchema = z.object({ id: z.string().min(1) });

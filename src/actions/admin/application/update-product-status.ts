@@ -13,7 +13,7 @@ export async function updateProductStatus(input: {
   await requireAdmin();
 
   const parsed = C_UpdateProductStatusDTOSchema.safeParse(input);
-  if (!parsed.success) return fail("Invalid status");
+  if (!parsed.success) return fail("잘못된 상태 값입니다");
 
   const result = await adminProductRepo.updateProductStatus(parsed.data);
   if (!result.success || !result.data) return fail(result.message);

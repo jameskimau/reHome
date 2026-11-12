@@ -13,11 +13,11 @@ const SignInForm = () => {
   return (
     <form action={formAction} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">이메일</Label>
         <Input id="email" name="email" type="email" autoComplete="username" required />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password">비밀번호</Label>
         <Input
           id="password"
           name="password"
@@ -32,7 +32,7 @@ const SignInForm = () => {
         </p>
       )}
       <Button type="submit" size="lg" className="w-full" disabled={pending}>
-        {pending ? "Signing in…" : "Sign in"}
+        {pending ? "로그인 중…" : "로그인"}
       </Button>
     </form>
   );

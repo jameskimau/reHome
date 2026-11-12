@@ -27,11 +27,11 @@ const DeleteProductButton = ({ id }: { id: string }) => {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <Button type="button" variant="destructive" disabled={pending} onClick={handleClick}>
-        {pending ? "Deleting…" : armed ? "Click again to delete" : "Delete product"}
+        {pending ? "삭제 중…" : armed ? "한 번 더 누르면 삭제됩니다" : "상품 삭제"}
       </Button>
       {armed && !pending && (
         <Button type="button" variant="ghost" onClick={() => setArmed(false)}>
-          Keep it
+          취소
         </Button>
       )}
       {error && <p className="text-sm text-destructive">{error}</p>}

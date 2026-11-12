@@ -6,7 +6,7 @@ import type { FormState } from "@/common/admin/form-state";
 import { C_SignInDTOSchema } from "@/common/admin/payload/auth.dto";
 import { getAuth } from "@/lib/auth/server";
 
-const INVALID = "Invalid email or password";
+const INVALID = "이메일 또는 비밀번호가 올바르지 않습니다";
 
 // CHECK SIGN-IN USE SERVER HOOKS
 export async function signIn(_prev: FormState, formData: FormData): Promise<FormState> {
@@ -21,7 +21,7 @@ export async function signIn(_prev: FormState, formData: FormData): Promise<Form
   // STAGE 3 -  102 - CHECK IF USER IS ADMIN
   if (data?.user?.role !== "admin") {
     await auth.signOut();
-    return { success: false, message: "This account is not an admin" };
+    return { success: false, message: "관리자 권한이 없는 계정입니다" };
   }
   // SIGN완료하고 ADMIN
   redirect("/admin");

@@ -13,17 +13,17 @@ export default function AdminPanelLayout({ children }: LayoutProps<"/admin">) {
       <header className="border-b bg-background">
         <Container className="flex h-14 items-center justify-between gap-4">
           <Link href="/admin" className="font-bold">
-            {siteConfig.name} <span className="font-normal text-muted-foreground">Admin</span>
+            {siteConfig.name} <span className="font-normal text-muted-foreground">관리자</span>
           </Link>
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost" size="sm">
               <Link href="/" target="_blank">
-                View site
+                사이트 보기
               </Link>
             </Button>
             <form action={signOut}>
               <Button type="submit" variant="outline" size="sm">
-                Log out
+                로그아웃
               </Button>
             </form>
           </div>

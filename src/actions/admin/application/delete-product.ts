@@ -19,7 +19,7 @@ export async function deleteProduct(input: { id: string }): Promise<ServerRespon
   await requireAdmin();
 
   const parsed = C_ProductIdDTOSchema.safeParse(input);
-  if (!parsed.success) return fail("Invalid product id");
+  if (!parsed.success) return fail("잘못된 상품 ID입니다");
 
   const result = await adminProductRepo.deleteProduct(parsed.data);
   if (!result.success || !result.data) return fail(result.message);
