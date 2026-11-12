@@ -4,7 +4,8 @@ import { siteConfig } from "@/config/site";
 
 const robots = (): MetadataRoute.Robots => {
   return {
-    rules: { userAgent: "*", allow: "/" },
+    // Admin is also noindex; this stops crawlers from requesting it at all.
+    rules: { userAgent: "*", allow: "/", disallow: "/admin" },
     sitemap: `${siteConfig.url}/sitemap.xml`,
   };
 };

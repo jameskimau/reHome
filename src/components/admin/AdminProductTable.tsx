@@ -14,10 +14,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { AdminProductListResponse } from "@/common/admin/response/product.response";
+import { CATEGORY_LABELS } from "@/components/admin/labels";
 import { CATEGORY_META } from "@/lib/catalog";
 import { formatPrice } from "@/lib/format";
 
-const dateFormat = new Intl.DateTimeFormat("en-AU", { day: "numeric", month: "short" });
+const dateFormat = new Intl.DateTimeFormat("ko-KR", { month: "short", day: "numeric" });
 
 interface AdminProductTableProps {
   products: AdminProductListResponse[];
@@ -25,7 +26,7 @@ interface AdminProductTableProps {
 
 const AdminProductTable = ({ products }: AdminProductTableProps) => {
   if (products.length === 0) {
-    return <p className="rounded-xl border bg-card p-8 text-center">No products yet.</p>;
+    return <p className="rounded-xl border bg-card p-8 text-center">등록된 상품이 없습니다.</p>;
   }
 
   return (
@@ -34,11 +35,11 @@ const AdminProductTable = ({ products }: AdminProductTableProps) => {
         <TableHeader className="bg-muted/40">
           <TableRow>
             <TableHead className="w-16" />
-            <TableHead>Product</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Note</TableHead>
-            <TableHead>Updated</TableHead>
+            <TableHead>상품</TableHead>
+            <TableHead>가격</TableHead>
+            <TableHead>상태</TableHead>
+            <TableHead>메모</TableHead>
+            <TableHead>수정일</TableHead>
             <TableHead />
           </TableRow>
         </TableHeader>
@@ -61,12 +62,12 @@ const AdminProductTable = ({ products }: AdminProductTableProps) => {
                   <p className="min-w-0 truncate font-medium">{product.title}</p>
                   {product.isSpecial && (
                     <Badge className="h-5 shrink-0 bg-cta px-1.5 text-[11px] text-cta-foreground">
-                      Special
+                      특가
                     </Badge>
                   )}
                 </div>
                 <p className="truncate text-xs text-muted-foreground">
-                  {product.brand} · {CATEGORY_META[product.category].label}
+                  {product.brand} · {CATEGORY_LABELS[product.category]}
                 </p>
               </TableCell>
               <TableCell className="whitespace-nowrap">
@@ -90,7 +91,7 @@ const AdminProductTable = ({ products }: AdminProductTableProps) => {
                 <Button asChild variant="outline" size="sm">
                   <Link href={`/admin/products/${product.id}/edit`}>
                     <PencilIcon aria-hidden="true" />
-                    Edit
+                    수정
                   </Link>
                 </Button>
               </TableCell>

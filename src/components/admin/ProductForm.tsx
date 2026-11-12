@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useActionState, type ReactNode } from "react";
 
 import { upsertProduct } from "@/actions/admin/application/upsert-product";
-import { STATUS_LABELS } from "@/components/admin/labels";
+import { CATEGORY_LABELS, CONDITION_LABELS, STATUS_LABELS } from "@/components/admin/labels";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,11 +12,12 @@ import { Textarea } from "@/components/ui/textarea";
 import type { FormState } from "@/common/admin/form-state";
 import { MAX_UPLOAD_MB } from "@/common/admin/payload/product.dto";
 import ImageDropzone from "@/components/admin/ImageDropzone";
+import NativeSelect from "@/components/admin/NativeSelect";
 import type { AdminProductDetailResponse } from "@/common/admin/response/product.response";
-import { CATEGORIES, CATEGORY_META, CONDITIONS, CONDITION_LABELS } from "@/lib/catalog";
+import { CATEGORIES, CONDITIONS } from "@/lib/catalog";
 
 const SELECT_CLASS =
-  "h-9 w-full rounded-md border border-input bg-background px-3 text-sm shadow-xs focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none";
+  "h-8 rounded-lg border-input bg-transparent pl-2.5 text-base transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm dark:bg-input/30";
 
 interface FieldProps {
   name: string;
@@ -70,19 +71,19 @@ const ProductForm = ({ product }: ProductFormProps) => {
 
   return (
     <form action={formAction} className="space-y-6">
-      <Section title="Basics">
-        <Field name="title" label="Title" state={state}>
+      <Section title="기본 정보">
+        <Field name="title" label="상품명" state={state}>
           <Input id="title" name="title" defaultValue={value("title")} required />
         </Field>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field name="brand" label="Brand" state={state}>
+          <Field name="brand" label="브랜드" state={state}>
             <Input id="brand" name="brand" defaultValue={value("brand")} required />
           </Field>
-          <Field name="model" label="Model" state={state}>
+          <Field name="model" label="모델명" state={state}>
             <Input id="model" name="model" defaultValue={value("model")} required />
           </Field>
-          <Field name="category" label="Category" state={state}>
-            <select
+          <Field name="category" label="카테고리" state={state}>
+            <NativeSelect
               id="category"
               name="category"
               defaultValue={value("category") || CATEGORIES[0]}
@@ -90,13 +91,13 @@ const ProductForm = ({ product }: ProductFormProps) => {
             >
               {CATEGORIES.map((category) => (
                 <option key={category} value={category}>
-                  {CATEGORY_META[category].label}
+                  {CATEGORY_LABELS[category]}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
-          <Field name="condition" label="Condition" state={state}>
-            <select
+          <Field name="condition" label="상태 등급" state={state}>
+            <NativeSelect
               id="condition"
               name="condition"
               defaultValue={value("condition") || CONDITIONS[0]}
@@ -107,10 +108,10 @@ const ProductForm = ({ product }: ProductFormProps) => {
                   {CONDITION_LABELS[condition]}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
-          <Field name="status" label="Status" state={state}>
-            <select
+          <Field name="status" label="판매 상태" state={state}>
+            <NativeSelect
               id="status"
               name="status"
               defaultValue={value("status") || "AVAILABLE"}
@@ -121,22 +122,22 @@ const ProductForm = ({ product }: ProductFormProps) => {
                   {label}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </Field>
           <Field
             name="slug"
-            label="URL slug"
-            hint="Leave empty to generate from the title"
+            label="URL 주소 (slug)"
+            hint="비워두면 상품명으로 자동 생성됩니다"
             state={state}
           >
-            <Input id="slug" name="slug" defaultValue={value("slug")} placeholder="auto" />
+            <Input id="slug" name="slug" defaultValue={value("slug")} placeholder="자동" />
           </Field>
         </div>
       </Section>
 
-      <Section title="Price">
+      <Section title="가격">
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field name="price" label="Selling price ($)" state={state}>
+          <Field name="price" label="판매가 ($)" state={state}>
             <Input
               id="price"
               name="price"
@@ -150,8 +151,8 @@ const ProductForm = ({ product }: ProductFormProps) => {
           </Field>
           <Field
             name="compareAtPrice"
-            label="Original price ($)"
-            hint="Shown struck through. Leave empty if not discounted"
+            label="정가 ($)"
+            hint="취소선으로 표시됩니다. 할인이 없으면 비워두세요"
             state={state}
           >
             <Input
@@ -174,13 +175,13 @@ const ProductForm = ({ product }: ProductFormProps) => {
             }
             className="size-4 accent-cta"
           />
-          Show as Special (ribbon + Special filter)
+          특가 상품으로 표시 (리본 + 특가 필터)
         </label>
       </Section>
 
-      <Section title="Specs">
+      <Section title="사양">
         <div className="grid gap-4 sm:grid-cols-3">
-          <Field name="capacity" label="Capacity (kg / L)" state={state}>
+          <Field name="capacity" label="용량 (kg / L)" state={state}>
             <Input
               id="capacity"
               name="capacity"
@@ -190,7 +191,7 @@ const ProductForm = ({ product }: ProductFormProps) => {
               defaultValue={value("capacity")}
             />
           </Field>
-          <Field name="energyRating" label="Energy stars" state={state}>
+          <Field name="energyRating" label="에너지 등급 (별 개수)" state={state}>
             <Input
               id="energyRating"
               name="energyRating"
@@ -201,7 +202,7 @@ const ProductForm = ({ product }: ProductFormProps) => {
               defaultValue={value("energyRating")}
             />
           </Field>
-          <Field name="warrantyMonths" label="Warranty (months)" state={state}>
+          <Field name="warrantyMonths" label="보증 기간 (개월)" state={state}>
             <Input
               id="warrantyMonths"
               name="warrantyMonths"
@@ -211,7 +212,7 @@ const ProductForm = ({ product }: ProductFormProps) => {
               defaultValue={value("warrantyMonths")}
             />
           </Field>
-          <Field name="widthCm" label="Width (cm)" state={state}>
+          <Field name="widthCm" label="너비 (cm)" state={state}>
             <Input
               id="widthCm"
               name="widthCm"
@@ -221,7 +222,7 @@ const ProductForm = ({ product }: ProductFormProps) => {
               defaultValue={value("widthCm")}
             />
           </Field>
-          <Field name="heightCm" label="Height (cm)" state={state}>
+          <Field name="heightCm" label="높이 (cm)" state={state}>
             <Input
               id="heightCm"
               name="heightCm"
@@ -231,7 +232,7 @@ const ProductForm = ({ product }: ProductFormProps) => {
               defaultValue={value("heightCm")}
             />
           </Field>
-          <Field name="depthCm" label="Depth (cm)" state={state}>
+          <Field name="depthCm" label="깊이 (cm)" state={state}>
             <Input
               id="depthCm"
               name="depthCm"
@@ -244,22 +245,22 @@ const ProductForm = ({ product }: ProductFormProps) => {
         </div>
       </Section>
 
-      <Section title="Photos & description">
-        <Field name="imageFiles" label="Upload photos" state={state}>
+      <Section title="사진 및 설명">
+        <Field name="imageFiles" label="사진 업로드" state={state}>
           <ImageDropzone
             name="imageFiles"
-            hint={`Resized automatically. Up to ${MAX_UPLOAD_MB}MB per save; added after the URLs below`}
+            hint={`자동으로 크기가 조정됩니다. 저장 1회당 최대 ${MAX_UPLOAD_MB}MB, 아래 이미지 URL 뒤에 추가됩니다`}
           />
         </Field>
         <Field
           name="images"
-          label="Image URLs"
-          hint="One per line; the first is the cover. Uploaded photos appear here after saving. Delete a line to remove it"
+          label="이미지 URL"
+          hint="한 줄에 하나씩 입력하며, 첫 번째 이미지가 대표 사진입니다. 업로드한 사진은 저장 후 여기에 표시되고, 줄을 지우면 삭제됩니다"
           state={state}
         >
           <Textarea id="images" name="images" rows={3} defaultValue={value("images")} />
         </Field>
-        <Field name="description" label="Description" state={state}>
+        <Field name="description" label="상품 설명" state={state}>
           <Textarea
             id="description"
             name="description"
@@ -270,18 +271,23 @@ const ProductForm = ({ product }: ProductFormProps) => {
         </Field>
       </Section>
 
-      <Section title="Admin note">
-        <Field name="note" label="Note" hint="Only visible here, never on the shop" state={state}>
+      <Section title="관리자 메모">
+        <Field
+          name="note"
+          label="메모"
+          hint="관리자 화면에서만 보이며 쇼핑몰에는 표시되지 않습니다"
+          state={state}
+        >
           <Textarea id="note" name="note" rows={2} defaultValue={value("note")} />
         </Field>
       </Section>
 
       <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" size="lg" disabled={pending}>
-          {pending ? "Saving…" : product ? "Save changes" : "Create product"}
+          {pending ? "저장 중…" : product ? "변경사항 저장" : "상품 등록"}
         </Button>
         <Button asChild variant="ghost" size="lg">
-          <Link href="/admin">Cancel</Link>
+          <Link href="/admin">취소</Link>
         </Button>
         {state && !state.success && (
           <p role="alert" className="text-sm font-medium text-destructive">

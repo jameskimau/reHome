@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 
 import { updateProductStatus } from "@/actions/admin/application/update-product-status";
 import { STATUS_LABELS } from "@/components/admin/labels";
+import NativeSelect from "@/components/admin/NativeSelect";
 import type { ProductStatus } from "@/generated/prisma/enums";
 import { cn } from "@/lib/utils";
 
@@ -39,22 +40,20 @@ const StatusSelect = ({ id, status }: StatusSelectProps) => {
 
   return (
     <div>
-      <select
-        aria-label="Status"
+      <NativeSelect
+        containerClassName="w-fit"
+        aria-label="판매 상태"
         value={value}
         disabled={pending}
         onChange={(event) => handleChange(event.target.value as ProductStatus)}
-        className={cn(
-          "h-8 rounded-md border bg-background px-2 text-sm font-medium disabled:opacity-60",
-          STATUS_STYLES[value],
-        )}
+        className={cn("h-8 font-medium disabled:opacity-60", STATUS_STYLES[value])}
       >
         {Object.entries(STATUS_LABELS).map(([option, label]) => (
           <option key={option} value={option}>
             {label}
           </option>
         ))}
-      </select>
+      </NativeSelect>
       {error && <p className="mt-1 text-xs text-destructive">{error}</p>}
     </div>
   );

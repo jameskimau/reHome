@@ -17,7 +17,7 @@ import { requireAdmin } from "@/lib/auth/admin";
 import { toBrandSlug as slugify } from "@/lib/catalog";
 import { uploadImage } from "@/lib/storage";
 
-const SLUG_TAKEN = "That slug is already in use";
+const SLUG_TAKEN = "이미 사용 중인 URL 주소입니다";
 
 async function save(id: string | null, payload: D_UpsertProductDTO) {
   return id ? adminProductRepo.updateProduct(id, payload) : adminProductRepo.createProduct(payload);
@@ -37,7 +37,7 @@ export async function upsertProduct(
   );
   const invalid = (fieldErrors: Record<string, string[] | undefined>): FormState => ({
     success: false,
-    message: "Check the highlighted fields",
+    message: "표시된 항목을 확인해주세요",
     fieldErrors,
     values,
   });
@@ -52,7 +52,7 @@ export async function upsertProduct(
   const files = C_ImageFilesDTOSchema.safeParse(picked);
   if (!files.success) return invalid({ imageFiles: [files.error.issues[0].message] });
   if (parsed.data.images.length + files.data.length > MAX_IMAGES) {
-    return invalid({ imageFiles: [`Up to ${MAX_IMAGES} images in total`] });
+    return invalid({ imageFiles: [`이미지는 총 ${MAX_IMAGES}장까지 가능합니다`] });
   }
 
   // Upload only after every field is valid, so a rejected form leaves no stray objects.
@@ -61,7 +61,7 @@ export async function upsertProduct(
     uploaded = await Promise.all(files.data.map((file) => uploadImage(file, "products")));
   } catch (error) {
     console.error("Image upload failed", error);
-    return { success: false, message: "Photo upload failed. Try again", values };
+    return { success: false, message: "사진 업로드에 실패했습니다. 다시 시도해주세요", values };
   }
   const data = { ...parsed.data, images: [...parsed.data.images, ...uploaded] };
 

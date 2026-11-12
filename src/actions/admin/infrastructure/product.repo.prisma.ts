@@ -69,10 +69,10 @@ function prismaErrorCode(error: unknown): string | undefined {
 
 function writeFailure(scope: string, error: unknown) {
   const code = prismaErrorCode(error);
-  if (code === "P2002") return fail("That slug is already in use");
-  if (code === "P2025") return fail("Product not found");
+  if (code === "P2002") return fail("이미 사용 중인 URL 주소입니다");
+  if (code === "P2025") return fail("상품을 찾을 수 없습니다");
   console.error(`[adminProductRepo.${scope}]`, error);
-  return fail("Failed to save product");
+  return fail("상품 저장에 실패했습니다");
 }
 // SRP - SINGLE RESPONSIBILITY PRINCIPLE
 // OOP = OBJECT ORIENTED PROGRAMMING
@@ -86,18 +86,18 @@ export const adminProductRepo: AdminProductRepo = {
       return ok(rows);
     } catch (error) {
       console.error("[adminProductRepo.fetchProducts]", error);
-      return fail("Failed to load products");
+      return fail("상품 목록을 불러오지 못했습니다");
     }
   },
 
   async fetchProductById({ id }) {
     try {
       const row = await db.product.findUnique({ where: { id }, select: DETAIL_SELECT });
-      if (!row) return ok(null, "Product not found");
+      if (!row) return ok(null, "상품을 찾을 수 없습니다");
       return ok(row);
     } catch (error) {
       console.error("[adminProductRepo.fetchProductById]", error);
-      return fail("Failed to load product");
+      return fail("상품을 불러오지 못했습니다");
     }
   },
 
@@ -107,7 +107,7 @@ export const adminProductRepo: AdminProductRepo = {
         data: { ...payload, soldAt: nextSoldAt(payload.status) },
         select: { slug: true },
       });
-      return ok({ slug: row.slug }, "Product created");
+      return ok({ slug: row.slug }, "상품이 등록되었습니다");
     } catch (error) {
       return writeFailure("createProduct", error);
     }
@@ -124,7 +124,7 @@ export const adminProductRepo: AdminProductRepo = {
         data: { ...payload, soldAt: nextSoldAt(payload.status, previous.soldAt) },
         select: { slug: true },
       });
-      return ok({ slug: row.slug, previousSlug: previous.slug }, "Product saved");
+      return ok({ slug: row.slug, previousSlug: previous.slug }, "상품이 저장되었습니다");
     } catch (error) {
       return writeFailure("updateProduct", error);
     }
@@ -141,7 +141,7 @@ export const adminProductRepo: AdminProductRepo = {
         data: { status, soldAt: nextSoldAt(status, previous.soldAt) },
         select: { slug: true },
       });
-      return ok({ slug: row.slug }, "Status updated");
+      return ok({ slug: row.slug }, "상태가 변경되었습니다");
     } catch (error) {
       return writeFailure("updateProductStatus", error);
     }
@@ -150,7 +150,7 @@ export const adminProductRepo: AdminProductRepo = {
   async deleteProduct({ id }) {
     try {
       const row = await db.product.delete({ where: { id }, select: { slug: true } });
-      return ok({ slug: row.slug }, "Product deleted");
+      return ok({ slug: row.slug }, "상품이 삭제되었습니다");
     } catch (error) {
       return writeFailure("deleteProduct", error);
     }

@@ -9,6 +9,7 @@ import Container from "@/components/common/Container";
 import DeliveryBadge from "@/components/product/DeliveryBadge";
 import PriceBox from "@/components/product/PriceBox";
 import ProductGallery from "@/components/product/ProductGallery";
+import ProductJsonLd from "@/components/product/ProductJsonLd";
 import ProductSpecs from "@/components/product/ProductSpecs";
 import SoldOverlay from "@/components/product/SoldOverlay";
 import StockStatus from "@/components/product/StockStatus";
@@ -33,7 +34,8 @@ export const generateMetadata = async ({
   return {
     title: product.title,
     description: product.description,
-    openGraph: { images: product.images.slice(0, 1) },
+    // No photo yet: leave openGraph out so the site-wide opengraph-image is used.
+    ...(product.images.length > 0 && { openGraph: { images: product.images.slice(0, 1) } }),
   };
 };
 
@@ -50,6 +52,7 @@ const ProductDetailPage = async ({ params }: PageProps<"/products/[slug]">) => {
 
   return (
     <Container className="space-y-6 py-8">
+      <ProductJsonLd product={product} />
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
